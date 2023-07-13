@@ -1,0 +1,35 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Base.Theme.Waed" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowLightStatusBar" tools:targetApi="26">false</item>
+        <item name="android:statusBarColor">@color/app_color</item>
+    </style>
+
+    <style name="Theme.Waed" parent="Base.Theme.Waed" />
+
+    <style name="Theme.Waed.Posters" parent="Base.Theme.Waed">
+        <item name="android:navigationBarColor">@color/app_color</item>
+    </style>
+
+    <style name="Theme.App.MySplash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.Waed</item>
+    </style>
+
+    <style name="CustomAppBarStyle">
+        <item name="android:background">@color/app_color</item>
+        <item name="android:fontFamily">@font/cairo_bold</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/white</item>
+        <item name="android:textSize">@dimen/_15ssp</item>
+    </style>
+
+    <style name="SelectableItemBackgroundStyle">
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+
+</resources>

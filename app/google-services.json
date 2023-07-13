@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "1017100371620",
+    "firebase_url": "https://waed-111e7-default-rtdb.firebaseio.com",
+    "project_id": "waed-111e7",
+    "storage_bucket": "waed-111e7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1017100371620:android:377269c1cf5a1526e10831",
+        "android_client_info": {
+          "package_name": "waed.dev.adminhoria"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1017100371620-ka4o5llvs0h21bf34d66tdv41djau8qk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUAG1hbuMt3TEFwCEQRWNfihN_ohn8tg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1017100371620-ka4o5llvs0h21bf34d66tdv41djau8qk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1017100371620:android:d8d3a1aa393a4e68e10831",
+        "android_client_info": {
+          "package_name": "waed.dev.ps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1017100371620-ka4o5llvs0h21bf34d66tdv41djau8qk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUAG1hbuMt3TEFwCEQRWNfihN_ohn8tg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1017100371620-ka4o5llvs0h21bf34d66tdv41djau8qk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
