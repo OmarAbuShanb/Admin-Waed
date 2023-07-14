@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "Login";
 
     private ActivityLoginBinding binding;
-
     private APIService apiService;
     private FirebaseController firebaseController;
 
@@ -46,7 +45,24 @@ public class LoginActivity extends AppCompatActivity {
 
         init();
     }
-    private void init(){
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkUserStatus();
+    }
+
+    /**
+     * This method [checkUserStatus]
+     * Checks if user is signed in aka (non-null) and update UI accordingly.
+     */
+    private void checkUserStatus() {
+        if (FirebaseController.getInstance().getCurrentUser() != null) {
+            navigateToHomeScreen();
+        }
+    }
+
+    private void init() {
+//        oneTime();
         initComponent();
         setupListeners();
     }
@@ -65,24 +81,49 @@ public class LoginActivity extends AppCompatActivity {
         var email = Objects.requireNonNull(binding.etEmail.getText()).toString().trim();
         var password = Objects.requireNonNull(binding.etPassword.getText()).toString().trim();
 
-        if (checkData(email,password)){
-            firebaseController.login(email, password, this, new FirebaseController.AuthCallback() {
+        if (checkData(email, password)) {
+            firebaseController.login(email, password, this, new FirebaseController.LoginCallback() {
                 @Override
                 public void onSuccess() {
-                    UtilsGeneral.getInstance().showToast(LoginActivity.this,"Welcome in..");
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finish();
+                    UtilsGeneral.getInstance().showToast(LoginActivity.this, "Welcome in..");
+                    navigateToHomeScreen();
                 }
+
                 @Override
                 public void onFailure(String errorMessage) {
-                    UtilsGeneral.getInstance().showSnackBar(binding.getRoot(),errorMessage);
+                    UtilsGeneral.getInstance().showSnackBar(binding.getRoot(), errorMessage);
                 }
             });
         }
     }
-    private boolean checkData(String email,String password) {
+
+    private void navigateToHomeScreen() {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finish();
+    }
+
+    private boolean checkData(String email, String password) {
         return !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password);
     }
+
+    // perform one time code for register
+    /*1private void oneTime(){
+        var sp = AppSharedPreferences.getInstance();
+        FirebaseController.getInstance().register("hesham@gmail.com", "12345678", new FirebaseController.RegisterCallback() {
+            @Override
+            public void onSuccess(String uid) {
+                sp.putCurrentUserUID(uid);
+                sp.putIsLoggedIn(true);
+                UtilsGeneral.getInstance().showToast(Objects.requireNonNull(AppController.getInstance()).getApplicationContext(),"Done Creating your Account !",1);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                sp.putCurrentUserUID(errorMessage);
+                sp.putIsLoggedIn(false);
+            }
+        });
+    }*/
 
     private void sendNotification(String message, String messageImageUrl) {
         Data data = new Data(
