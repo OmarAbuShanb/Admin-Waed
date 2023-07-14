@@ -8,15 +8,20 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import waed.dev.adminhoria.Utils.AppSharedPreferences;
+import waed.dev.adminhoria.firebase.utils.FirebaseUtils;
+
 public class FirebaseController {
+    // utils
+    private final FirebaseUtils firebaseUtils;
     private final FirebaseAuth firebaseAuth;
     private final FirebaseFirestore database;
     private static volatile FirebaseController Instance;
 
     private FirebaseController() {
+        firebaseUtils = FirebaseUtils.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseFirestore.getInstance();
-
     }
 
     public synchronized static FirebaseController getInstance() {
@@ -52,7 +57,7 @@ public class FirebaseController {
                 var taskException = task.getException();
                 if (taskException instanceof FirebaseAuthException) {
                     var errorCode = ((FirebaseAuthException) taskException).getErrorCode();
-                    var errorMessage = getFirebaseErrorMessage(errorCode);
+                    var errorMessage = firebaseUtils.getFirebaseErrorMessage(errorCode);
                     loginCallback.onFailure(errorMessage);
                 } else {
                     Log.e("FC", "login: taskEx went wrong");
@@ -61,8 +66,7 @@ public class FirebaseController {
         });
     }
 
-    public void register(String email, String password,
-            RegisterCallback registerCallback) {
+    public void register(String email, String password, RegisterCallback registerCallback) {
         getAuth().createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 var taskResult =task.getResult().getUser();
@@ -76,7 +80,7 @@ public class FirebaseController {
                 var taskException = task.getException();
                 if (taskException instanceof FirebaseAuthException) {
                     var errorCode = ((FirebaseAuthException) taskException).getErrorCode();
-                    var errorMessage = getFirebaseErrorMessage(errorCode);
+                    var errorMessage = firebaseUtils.getFirebaseErrorMessage(errorCode);
                     registerCallback.onFailure(errorMessage);
                 } else {
                     Log.e("FC", "Register: taskEx went wrong");
@@ -86,23 +90,15 @@ public class FirebaseController {
     }
 
 
-    private void signOut() {
+    public void signOut() {
         getAuth().signOut();
-//        AppSharedPreferences.getInstance(context).clear()
+        // additionally you empty the sheared
+        firebaseUtils.userExitCase();
     }
 
-    private String getFirebaseErrorMessage(String errorCode) {
-        String errorMessage;
-        switch (errorCode) {
-            case "ERROR_INVALID_EMAIL" -> errorMessage = "Invalid email address.";
-            case "ERROR_WRONG_PASSWORD" -> errorMessage = "Incorrect password.";
-            case "ERROR_USER_NOT_FOUND" -> errorMessage = "User not found.";
-            case "ERROR_EMAIL_ALREADY_IN_USE" -> errorMessage = "Email already in use.";
-            default -> errorMessage = "Authentication failed.";
-        }
-        return errorMessage;
-    }
 
+
+    /* Interfaces------------------- */
     public interface LoginCallback {
         void onSuccess();
 

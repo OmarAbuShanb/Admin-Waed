@@ -58,10 +58,11 @@ public class AppSharedPreferences {
 
 
     // when user logout for instance
-    public void clear() {
+    public boolean clear() {
         editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
+        return true;
     }
 
 }
