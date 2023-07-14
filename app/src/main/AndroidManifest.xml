@@ -18,44 +18,44 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
         <activity
-            android:name=".Screens.Admins.AddAdmin"
+            android:name=".screens.admin.AddAdminActivity"
             android:exported="false" />
         <activity
-            android:name=".Screens.Notification.PushNotification"
+            android:name=".screens.notification.PushNotificationActivity"
             android:exported="false" />
         <activity
-            android:name=".Screens.Posters.AddPoster"
+            android:name=".screens.posters.AddPosterActivity"
             android:exported="false" />
         <activity
-            android:name=".Screens.Prisoners.AddPrisoner"
+            android:name=".screens.prisoners.AddPrisonerActivity"
             android:exported="false" />
         <activity
-            android:name=".Screens.News.NewsActivity"
+            android:name=".screens.news.NewsActivity"
             android:exported="false" />
         <activity
-            android:name=".Screens.Books.AddBook"
+            android:name=".screens.book.AddBookActivity"
             android:exported="false" />
         <activity
-            android:name=".Screens.News.AddNews"
+            android:name=".screens.news.AddNewsActivity"
             android:exported="false" />
         <activity
-            android:name=".Screens.Posters.PrisonersPosters"
+            android:name=".screens.posters.PrisonersPostersActivity"
             android:exported="false" />
         <activity
-            android:name=".Screens.Books.PrisonersBooks"
+            android:name=".screens.book.PrisonersBooksActivity"
             android:exported="false" />
         <activity
-            android:name=".Screens.Statistics.PrisonersStatistics"
+            android:name=".screens.statistics.PrisonersStatisticsActivity"
             android:exported="true" />
         <activity
-            android:name=".Screens.Prisoners.PrisonersCards"
+            android:name=".screens.prisoners.PrisonersCardsActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
 
         <activity
-            android:name=".Auth.LoginActivity"
+            android:name=".screens.auth.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.App.MySplash" >
             <intent-filter>

@@ -5,43 +5,38 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import waed.dev.adminhoria.Screens.Admins.AddAdmin;
-import waed.dev.adminhoria.Screens.Books.PrisonersBooks;
-import waed.dev.adminhoria.Screens.News.NewsActivity;
-import waed.dev.adminhoria.Screens.Notification.PushNotification;
-import waed.dev.adminhoria.Screens.Posters.PrisonersPosters;
-import waed.dev.adminhoria.Screens.Prisoners.PrisonersCards;
-import waed.dev.adminhoria.Screens.Statistics.PrisonersStatistics;
+import waed.dev.adminhoria.screens.admin.AddAdminActivity;
+import waed.dev.adminhoria.screens.book.PrisonersBooksActivity;
+import waed.dev.adminhoria.screens.news.NewsActivity;
+import waed.dev.adminhoria.screens.notification.PushNotificationActivity;
+import waed.dev.adminhoria.screens.posters.PrisonersPostersActivity;
+import waed.dev.adminhoria.screens.prisoners.PrisonersCardsActivity;
+import waed.dev.adminhoria.screens.statistics.PrisonersStatisticsActivity;
 import waed.dev.adminhoria.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
-    ActivityMainBinding binding;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        setupListeners();
+    }
 
-        binding.statisticsCard.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, PrisonersStatistics.class)));
+    private void setupListeners() {
+        binding.statisticsCard.setOnClickListener(view -> startNewActivity(PrisonersStatisticsActivity.class));
+        binding.booksCard.setOnClickListener(view -> startNewActivity(PrisonersBooksActivity.class));
+        binding.cardsCard.setOnClickListener(view -> startNewActivity(PrisonersCardsActivity.class));
+        binding.postersCard.setOnClickListener(view -> startNewActivity(PrisonersPostersActivity.class));
+        binding.cardNews.setOnClickListener(view -> startNewActivity(NewsActivity.class));
+        binding.floatPushNotification.setOnClickListener(view -> startNewActivity(PushNotificationActivity.class));
+        binding.btnAddAdmin.setOnClickListener(view -> startNewActivity(AddAdminActivity.class));
+    }
 
-        binding.booksCard.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, PrisonersBooks.class)));
-
-        binding.cardsCard.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, PrisonersCards.class)));
-
-        binding.postersCard.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, PrisonersPosters.class)));
-
-        binding.cardNews.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, NewsActivity.class)));
-
-        binding.floatPushNotification.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, PushNotification.class)));
-
-        binding.btnAddAdmin.setOnClickListener(view ->
-                startActivity(new Intent(MainActivity.this, AddAdmin.class)));
+    private void startNewActivity(Class<?> activityClass) {
+        Intent intent = new Intent(MainActivity.this, activityClass);
+        startActivity(intent);
     }
 }

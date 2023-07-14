@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Screens.News.NewsActivity">
+    tools:context=".screens.news.NewsActivity">
 
+    <!--Toolbar-->
     <TextView
         android:id="@+id/headContentName"
         style="@style/CustomAppBarStyle"
@@ -16,6 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--Recycler-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/newsRecyclerView"
         android:layout_width="match_parent"
@@ -26,6 +28,7 @@
         app:layout_constraintTop_toBottomOf="@+id/headContentName"
         tools:listitem="@layout/news_item" />
 
+    <!--AddButton-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatAddNews"
         android:layout_width="wrap_content"

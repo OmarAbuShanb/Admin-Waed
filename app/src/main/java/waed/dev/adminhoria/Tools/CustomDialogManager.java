@@ -11,7 +11,7 @@ import waed.dev.adminhoria.databinding.EditDialogBinding;
 
 public class CustomDialogManager {
 
-    public static void showDialog(Activity activity, String tittle) {
+    public static void showDialog(Activity activity, String title) {
         EditDialogBinding.inflate(LayoutInflater.from(activity));
         EditDialogBinding editDialogBinding;
         Dialog dialog = new Dialog(activity);
@@ -19,7 +19,7 @@ public class CustomDialogManager {
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
         editDialogBinding = EditDialogBinding.inflate(LayoutInflater.from(activity));
         dialog.setContentView(editDialogBinding.getRoot());
-        editDialogBinding.textDialogTitle.setText(tittle);
+        editDialogBinding.textDialogTitle.setText(title);
         editDialogBinding.buttonOk.setOnClickListener(v -> {
             dialog.dismiss();
         });
