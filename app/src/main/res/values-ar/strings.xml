@@ -72,5 +72,7 @@
     <string name="add_new_admin">إضافة مشرف جديد</string>
     <string name="do_you_really_want_to_log_out">Do you really want to logout?</string>
     <string name="cancel">"Cancel  "</string>
+    <string name="enter_the_new_value">ادخل القيمة الجديدة</string>
+    <string name="save">حفظ</string>
 
 </resources>

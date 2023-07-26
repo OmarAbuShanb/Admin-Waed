@@ -8,6 +8,8 @@
 
     <color name="red">#CC0303</color>
 
+    <color name="place_holder_color">#AAADC4</color>
+
     <color name="gray_light">#F1F1F1</color>
     <color name="gray_dark">#AEAEAE</color>
 </resources>

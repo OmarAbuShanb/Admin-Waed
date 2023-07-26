@@ -1,17 +1,18 @@
 package waed.dev.adminhoria.firebase.utils;
 
-import waed.dev.adminhoria.Utils.AppSharedPreferences;
-
 public class FirebaseUtils {
     private static volatile FirebaseUtils Instance;
-    private FirebaseUtils(){
+
+    private FirebaseUtils() {
     }
+
     public static synchronized FirebaseUtils getInstance() {
         if (Instance == null) {
             Instance = new FirebaseUtils();
         }
         return Instance;
     }
+
     public String getFirebaseErrorMessage(String errorCode) {
         String errorMessage;
         switch (errorCode) {
@@ -24,7 +25,7 @@ public class FirebaseUtils {
         return errorMessage;
     }
 
-    public void userExitCase(){
-        AppSharedPreferences.getInstance().clear();
-    }
+//    public void userExitCase(){
+//        AppSharedPreferences.getInstance().clear();
+//    }
 }

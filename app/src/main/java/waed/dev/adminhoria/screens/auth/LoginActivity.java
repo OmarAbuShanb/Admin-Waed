@@ -4,93 +4,65 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.splashscreen.SplashScreen;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.Objects;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 import waed.dev.adminhoria.MainActivity;
+import waed.dev.adminhoria.Utils.AppSharedPreferences;
 import waed.dev.adminhoria.Utils.UtilsGeneral;
 import waed.dev.adminhoria.databinding.ActivityLoginBinding;
 import waed.dev.adminhoria.firebase.controller.FirebaseController;
-import waed.dev.adminhoria.firebase.notification.APIService;
-import waed.dev.adminhoria.firebase.notification.Client;
-import waed.dev.adminhoria.firebase.notification.Data;
-import waed.dev.adminhoria.firebase.notification.Sender;
+import waed.dev.adminhoria.screens.dialogs.LoadingDialog;
 
 public class LoginActivity extends AppCompatActivity {
-    private static final String TAG = "Login";
+    private static final String TAG = "LoginActivity";
 
     private ActivityLoginBinding binding;
-    private APIService apiService;
+
     private FirebaseController firebaseController;
+
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SplashScreen.installSplashScreen(this);
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         init();
     }
-    @Override
-    protected void onStart() {
-        super.onStart();
-        checkUserStatus();
-    }
-
-    /**
-     * This method [checkUserStatus]
-     * Checks if user is signed in aka (non-null) and update UI accordingly.
-     */
-    private void checkUserStatus() {
-        if (FirebaseController.getInstance().getCurrentUser() != null) {
-            navigateToHomeScreen();
-        }
-    }
 
     private void init() {
-//        oneTime();
-        initComponent();
-        setupListeners();
-    }
-
-    private void initComponent() {
         firebaseController = FirebaseController.getInstance();
-        apiService = Client.getClient().create(APIService.class);
-    }
+        loadingDialog = new LoadingDialog();
 
-    private void setupListeners() {
         binding.btnLogin.setOnClickListener(view -> performLogin());
     }
 
-    // helper to perform the login logic
+    private boolean checkData(String email, String password) {
+        return !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password);
+    }
+
+
     private void performLogin() {
-        var email = Objects.requireNonNull(binding.etEmail.getText()).toString().trim();
-        var password = Objects.requireNonNull(binding.etPassword.getText()).toString().trim();
+        String email = Objects.requireNonNull(binding.etEmail.getText()).toString().trim();
+        String password = Objects.requireNonNull(binding.etPassword.getText()).toString().trim();
 
         if (checkData(email, password)) {
-            firebaseController.login(email, password, this, new FirebaseController.LoginCallback() {
+            loadingDialog.show(getSupportFragmentManager(), "Login");
+            firebaseController.login(email, password, this, new FirebaseController.FirebaseAuthCallback() {
                 @Override
-                public void onSuccess() {
-                    UtilsGeneral.getInstance().showToast(LoginActivity.this, "Welcome in..");
+                public void onSuccess(String userUid) {
+                    AppSharedPreferences.getInstance().putCurrentUserUID(userUid);
                     navigateToHomeScreen();
+                    loadingDialog.dismiss();
                 }
 
                 @Override
                 public void onFailure(String errorMessage) {
+                    loadingDialog.dismiss();
                     UtilsGeneral.getInstance().showSnackBar(binding.getRoot(), errorMessage);
                 }
             });
@@ -100,72 +72,5 @@ public class LoginActivity extends AppCompatActivity {
     private void navigateToHomeScreen() {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
-    }
-
-    private boolean checkData(String email, String password) {
-        return !TextUtils.isEmpty(email) && !TextUtils.isEmpty(password);
-    }
-
-    // perform one time code for register
-    /*1private void oneTime(){
-        var sp = AppSharedPreferences.getInstance();
-        FirebaseController.getInstance().register("hesham@gmail.com", "12345678", new FirebaseController.RegisterCallback() {
-            @Override
-            public void onSuccess(String uid) {
-                sp.putCurrentUserUID(uid);
-                sp.putIsLoggedIn(true);
-                UtilsGeneral.getInstance().showToast(Objects.requireNonNull(AppController.getInstance()).getApplicationContext(),"Done Creating your Account !",1);
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                sp.putCurrentUserUID(errorMessage);
-                sp.putIsLoggedIn(false);
-            }
-        });
-    }*/
-
-    private void sendNotification(String message, String messageImageUrl) {
-        Data data = new Data(
-                "معنى أن الغاية هي الشكل وليس المحتوى",
-                """
-                         هذا النص هو مثال لنص يمكن أن يستبدل في نفس المساحة، لقد تم توليد هذا النص من مولد النص العربى، حيث يمكنك أن تولد مثل هذا النص أو العديد من النصوص الأخرى إضافة إلى زيادة عدد الحروف التى يولدها التطبيق.
-                          إذا كنت تحتاج إلى عدد أكبر من الفقرات يتيح لك مولد النص العربى زيادة عدد الفقرات كما تريد، النص لن يبدو مقسما ولا يحوي أخطاء لغوية، مولد النص العربى مفيد لمصممي المواقع على وجه الخصوص، حيث يحتاج العميل فى كثير من الأحيان أن يطلع على صورة حقيقية لتصميم الموقع.
-                          ومن هنا وجب على المصمم أن يضع نصوصا مؤقتة على التصميم ليظهر للعميل الشكل كاملاً،دور مولد النص العربى أن يوفر على المصمم عناء البحث عن نص بديل لا علاقة له بالموضوع الذى يتحدث عنه التصميم فيظهر بشكل لا يليق.
-                        """
-        );
-        Sender sender = new Sender(data, "/topics/news");
-        sendNotificationFCM(sender);
-    }
-
-    private void sendNotificationFCM(Sender sender) {
-        apiService.sendNotification(sender)
-                .enqueue(new Callback<>() {
-                    @Override
-                    public void onResponse(@NonNull Call<ResponseBody> call, @NonNull Response<ResponseBody> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            try {
-                                JSONObject object = new JSONObject(response.body().string());
-                                long messageId = object.getLong("message_id");
-                                if (messageId > 0) {
-                                    Toast.makeText(getBaseContext(), "تم ارسال الاشعار بنجاح", Toast.LENGTH_SHORT).show();
-                                } else {
-                                    Toast.makeText(getBaseContext(), "لم يتم ارسال الاشعار", Toast.LENGTH_SHORT).show();
-                                    Log.e(TAG, "onResponse: " + response);
-                                }
-                            } catch (JSONException | IOException e) {
-                                Toast.makeText(getBaseContext(), "لم يتم ارسال الاشعار", Toast.LENGTH_SHORT).show();
-                                throw new RuntimeException(e);
-                            }
-                            // {"message_id":8184558659465678489}
-                        }
-                    }
-
-                    // // {"multicast_id":6143843070518083714,"success":0,"failure":1,"canonical_ids":0,"results":[{"error":"NotRegistered"}]}
-                    @Override
-                    public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                        Log.e(TAG, "onFailure: " + t.getMessage());
-                    }
-                });
     }
 }

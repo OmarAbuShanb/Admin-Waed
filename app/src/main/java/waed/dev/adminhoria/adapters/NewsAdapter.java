@@ -9,11 +9,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import waed.dev.adminhoria.models.News;
+import waed.dev.adminhoria.Utils.UtilsGeneral;
 import waed.dev.adminhoria.databinding.NewsItemBinding;
+import waed.dev.adminhoria.models.News;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private ArrayList<News> news;
+
+    private NewsListListener newsListListener;
+    private DeleteNewsListListener deleteNewsListListener;
+
+    public void setNewsListCallback(NewsListListener newsListListener) {
+        this.newsListListener = newsListListener;
+    }
+
+    public void setDeleteNewsCallback(DeleteNewsListListener deleteNewsListListener) {
+        this.deleteNewsListListener = deleteNewsListListener;
+    }
 
     public NewsAdapter(ArrayList<News> news) {
         this.news = news;
@@ -21,6 +33,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
 
     public void setNews(ArrayList<News> news) {
         this.news = news;
+        notifyItemRangeInserted(0, news.size());
+    }
+
+    public void removeItem(int position) {
+        news.remove(position);
+        notifyItemRemoved(position);
     }
 
     @NonNull
@@ -34,7 +52,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         News model = news.get(position);
-        holder.bind(model);
+        holder.bind(model, position);
+
+        holder.setNewsListCallback(newsListListener);
+        holder.setDeleteNewsCallback(deleteNewsListListener);
+
     }
 
     @Override
@@ -45,6 +67,16 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     static class NewsViewHolder extends RecyclerView.ViewHolder {
         private final NewsItemBinding binding;
         private final Context context;
+        private NewsListListener newsListListener;
+        private DeleteNewsListListener deleteNewsListListener;
+
+        protected void setNewsListCallback(NewsListListener newsListListener) {
+            this.newsListListener = newsListListener;
+        }
+
+        protected void setDeleteNewsCallback(DeleteNewsListListener deleteNewsListListener) {
+            this.deleteNewsListListener = deleteNewsListListener;
+        }
 
         public NewsViewHolder(@NonNull NewsItemBinding binding) {
             super(binding.getRoot());
@@ -52,22 +84,25 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             context = binding.getRoot().getContext();
         }
 
-        void bind(News model) {
+        void bind(News model, int position) {
             binding.newsTitle.setText(model.getTitle());
-            binding.newsImage.setImageResource(model.getImageUrl());
 
-            /*            binding.newsCard.setOnClickListener(v -> {
-                Intent details = new Intent(context, NewsDetails.class);
-                details.putExtra("news_image", model.getNewsImage());
-                details.putExtra("news_title", model.getNewsTitle());
-                details.putExtra("news_details", model.getNewsDetails());
+            UtilsGeneral.getInstance()
+                    .loadImage(context, model.getImageUrl())
+                    .into(binding.ivNews);
 
-                Pair<View, String>[] pairs = new Pair[1];
-                pairs[0] = new Pair<>(v, ViewCompat.getTransitionName(v));
-                ActivityOptionsCompat optionsCompat =
-                        ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, pairs);
-                context.startActivity(details, optionsCompat.toBundle());
-            });*/
+            binding.buNewsCard.setOnClickListener(v -> newsListListener.onClickItemListener(model));
+
+            binding.btnDeleteNews.setOnClickListener(v ->
+                    deleteNewsListListener.onClickDeleteListener(model.getId(), position));
         }
+    }
+
+    public interface NewsListListener {
+        void onClickItemListener(News model);
+    }
+
+    public interface DeleteNewsListListener {
+        void onClickDeleteListener(String newsId, int positionItem);
     }
 }

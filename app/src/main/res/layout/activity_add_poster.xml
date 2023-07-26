@@ -40,7 +40,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardImageNews"
+                    android:id="@+id/buChoosePosterImage"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_180sdp"
                     android:layout_marginHorizontal="@dimen/_8sdp"
@@ -52,7 +52,7 @@
                         android:layout_height="match_parent">
 
                         <ImageView
-                            android:id="@+id/imageView"
+                            android:id="@+id/ivPoster"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:scaleType="centerCrop"
@@ -111,7 +111,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <Button
-                    android:id="@+id/btnAddNews"
+                    android:id="@+id/btnAddPoster"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/_10sdp"

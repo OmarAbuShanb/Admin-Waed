@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
+        android:id="@+id/scrollContent"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -47,7 +48,6 @@
                     android:paddingEnd="@dimen/_28sdp">
 
                     <TextView
-                        android:id="@+id/titleNumOfMartyrsOfCaptiveMovement"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -57,7 +57,7 @@
                         android:textSize="@dimen/_14ssp" />
 
                     <TextView
-                        android:id="@+id/numberNumOfMartyrsOfCaptiveMovement"
+                        android:id="@+id/tvNumOfMartyrsOfCaptiveMovement"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_30sdp"
@@ -95,7 +95,7 @@
                         android:textSize="@dimen/_14ssp" />
 
                     <TextView
-                        android:id="@+id/tvNumOfCairoMedium"
+                        android:id="@+id/tvNumOfChildCaptives"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_30sdp"
@@ -209,7 +209,7 @@
                         android:textSize="@dimen/_14ssp" />
 
                     <TextView
-                        android:id="@+id/tvNumOfPrisonerHeSpentMoreThan30Scholars"
+                        android:id="@+id/tvNumOfPrisonersWhoSpentMoreThan30Scholars"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_30sdp"
@@ -341,5 +341,17 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressStatistics"
+        style="@style/CircularProgressStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_50sdp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headContentName" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,12 +1,14 @@
 package waed.dev.adminhoria.models;
 
-public class News {
+import java.io.Serializable;
+
+public class News implements Serializable {
     private String id;
-    private int imageUrl;
+    private String imageUrl;
     private String title;
     private String details;
 
-    public News(String id, int imageUrl, String title, String details) {
+    public News(String id, String imageUrl, String title, String details) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.title = title;
@@ -24,11 +26,11 @@ public class News {
         this.id = id;
     }
 
-    public int getImageUrl() {
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(int imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 

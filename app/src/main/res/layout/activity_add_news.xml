@@ -30,7 +30,7 @@
             android:layout_height="wrap_content">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardImageNews"
+                android:id="@+id/buChooseImageNews"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_180sdp"
                 android:layout_marginHorizontal="@dimen/_8sdp"
@@ -45,7 +45,7 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:id="@+id/imageView"
+                        android:id="@+id/ivImageNews"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"
@@ -114,7 +114,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardImageNews">
+                app:layout_constraintTop_toBottomOf="@+id/buChooseImageNews">
 
                 <LinearLayout
                     android:id="@+id/loginLinear"
@@ -159,8 +159,8 @@
                         android:gravity="center"
                         app:helperTextTextColor="@color/app_color">
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/etDescription"
+                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etDetails"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="5dp"

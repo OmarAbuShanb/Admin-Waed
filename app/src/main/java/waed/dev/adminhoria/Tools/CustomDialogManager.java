@@ -11,18 +11,22 @@ import waed.dev.adminhoria.databinding.EditDialogBinding;
 
 public class CustomDialogManager {
 
-    public static void showDialog(Activity activity, String title) {
-        EditDialogBinding.inflate(LayoutInflater.from(activity));
-        EditDialogBinding editDialogBinding;
+    public static void showDialog(Activity activity, String oldValue, ClickSaveListener listener) {
         Dialog dialog = new Dialog(activity);
-        dialog.setCancelable(false);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        editDialogBinding = EditDialogBinding.inflate(LayoutInflater.from(activity));
+        EditDialogBinding editDialogBinding = EditDialogBinding.inflate(LayoutInflater.from(activity));
         dialog.setContentView(editDialogBinding.getRoot());
-        editDialogBinding.textDialogTitle.setText(title);
+        editDialogBinding.etEditDialog.setText(oldValue);
         editDialogBinding.buttonOk.setOnClickListener(v -> {
             dialog.dismiss();
+
+            String newValue = editDialogBinding.etEditDialog.getText().toString().trim();
+            listener.onClickSave(newValue);
         });
         dialog.show();
+    }
+
+    public interface ClickSaveListener {
+        void onClickSave(String newValue);
     }
 }

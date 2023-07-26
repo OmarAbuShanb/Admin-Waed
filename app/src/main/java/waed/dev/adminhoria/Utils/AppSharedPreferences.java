@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 
 public class AppSharedPreferences {
     private enum SharedPreferencesKeys {
-      UID,LoggedIn
+        UID
     }
 
     private static AppSharedPreferences Instance;
@@ -25,37 +25,15 @@ public class AppSharedPreferences {
         return Instance;
     }
 
-
-
     public void putCurrentUserUID(String uid) {
         editor = sharedPreferences.edit();
         editor.putString(SharedPreferencesKeys.UID.name(), uid);
         editor.apply();
     }
+
     public String getCurrentUserUID() {
-        return sharedPreferences.getString(SharedPreferencesKeys.UID.name(), "");
+        return sharedPreferences.getString(SharedPreferencesKeys.UID.name(), null);
     }
-    public void removeCurrentUserUID() {
-        editor = sharedPreferences.edit();
-        editor.remove(SharedPreferencesKeys.UID.name());
-        editor.apply();
-    }
-
-    // LoggedIn
-    public void putIsLoggedIn(boolean isLogged) {
-        editor = sharedPreferences.edit();
-        editor.putBoolean(SharedPreferencesKeys.LoggedIn.name(),true);
-        editor.apply();
-    }
-    public boolean getIsLoggedIn() {
-        return sharedPreferences.getBoolean(SharedPreferencesKeys.LoggedIn.name(), false);
-    }
-    public void removeIsLoggedIn() {
-        editor = sharedPreferences.edit();
-        editor.remove(SharedPreferencesKeys.LoggedIn.name());
-        editor.apply();
-    }
-
 
     // when user logout for instance
     public boolean clear() {
@@ -64,5 +42,4 @@ public class AppSharedPreferences {
         editor.apply();
         return true;
     }
-
 }

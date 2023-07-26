@@ -2,12 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/_8sdp">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/newsCard"
+        android:id="@+id/buNewsCard"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:transitionName="newsCard"
@@ -21,7 +21,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/newsImage"
+                android:id="@+id/ivNews"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:contentDescription="@null"
@@ -36,10 +36,10 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:background="@drawable/gradient_alpha_black"
-                app:layout_constraintBottom_toBottomOf="@id/newsImage"
-                app:layout_constraintEnd_toEndOf="@id/newsImage"
-                app:layout_constraintStart_toStartOf="@id/newsImage"
-                app:layout_constraintTop_toTopOf="@id/newsImage" />
+                app:layout_constraintBottom_toBottomOf="@id/ivNews"
+                app:layout_constraintEnd_toEndOf="@id/ivNews"
+                app:layout_constraintStart_toStartOf="@id/ivNews"
+                app:layout_constraintTop_toTopOf="@id/ivNews" />
 
             <TextView
                 android:id="@+id/newsTitle"
@@ -53,7 +53,7 @@
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="@dimen/_14ssp"
-                app:layout_constraintBottom_toBottomOf="@+id/newsImage"
+                app:layout_constraintBottom_toBottomOf="@+id/ivNews"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="RtlSymmetry" />

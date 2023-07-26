@@ -1,29 +1,26 @@
 package waed.dev.adminhoria.models;
 
-public class Book {
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Book implements Serializable {
     private String id;
-    private int imageUrl;
+    private String imageUrl;
     private String name;
     private String author;
-    private boolean isDownloaded;
+    private String pdfUrl;
 
 
     public Book() {
     }
 
-    public Book(String id, int imageUrl, String name, String author) {
+    public Book(String id, String imageUrl, String name, String author, String pdfUrl) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.name = name;
         this.author = author;
-    }
-
-    public Book(String id, int imageUrl, String name, String author, boolean isDownloaded) {
-        this.id = id;
-        this.imageUrl = imageUrl;
-        this.name = name;
-        this.author = author;
-        this.isDownloaded = isDownloaded;
+        this.pdfUrl = pdfUrl;
     }
 
     public String getId() {
@@ -34,11 +31,11 @@ public class Book {
         this.id = id;
     }
 
-    public int getImageUrl() {
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(int imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -58,11 +55,11 @@ public class Book {
         this.author = author;
     }
 
-    public boolean isDownloaded() {
-        return isDownloaded;
+    public String getPdfUrl() {
+        return pdfUrl;
     }
 
-    public void setDownloaded(boolean downloaded) {
-        isDownloaded = downloaded;
+    public void setPdfUrl(String pdfUrl) {
+        this.pdfUrl = pdfUrl;
     }
 }

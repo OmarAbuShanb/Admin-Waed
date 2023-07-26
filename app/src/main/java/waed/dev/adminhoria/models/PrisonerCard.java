@@ -1,14 +1,20 @@
 package waed.dev.adminhoria.models;
 
-public class PrisonerCard {
+import java.io.Serializable;
+
+public class PrisonerCard implements Serializable {
     private String id;
-    private int imageUrl;
+    private String imageUrl;
     private String name;
     private String dateOfArrest;
     private String judgment;
     private String living;
 
-    public PrisonerCard(String id, int imageUrl, String name, String dateOfArrest, String judgment, String living) {
+    public PrisonerCard() {
+
+    }
+
+    public PrisonerCard(String id, String imageUrl, String name, String dateOfArrest, String judgment, String living) {
         this.id = id;
         this.imageUrl = imageUrl;
         this.name = name;
@@ -17,21 +23,19 @@ public class PrisonerCard {
         this.living = living;
     }
 
-    public PrisonerCard() {
-    }
     public String getId() {
         return id;
     }
 
-    public void setId(String prisonerId) {
-        this.id = prisonerId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public int getImageUrl() {
+    public String getImageUrl() {
         return imageUrl;
     }
 
-    public void setImageUrl(int imageUrl) {
+    public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
@@ -66,6 +70,4 @@ public class PrisonerCard {
     public void setLiving(String living) {
         this.living = living;
     }
-
-
 }

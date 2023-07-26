@@ -67,4 +67,6 @@
     <string name="add_new_admin">Add new Admin</string>
     <string name="do_you_really_want_to_log_out">Do you really want to logout?</string>
     <string name="cancel">Cancel</string>
+    <string name="enter_the_new_value">Enter the new value</string>
+    <string name="save">Save</string>
 </resources>

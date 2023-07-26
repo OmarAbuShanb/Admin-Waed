@@ -1,5 +1,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/_4sdp"
@@ -24,27 +25,27 @@
             android:padding="@dimen/_5sdp">
 
             <TextView
-                android:id="@+id/text_dialog_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:hint="Text hint"
-                android:textColorHint="@color/app_color"
                 android:layout_margin="@dimen/_4sdp"
                 android:gravity="center"
+                android:hint="@string/enter_the_new_value"
                 android:textColor="@android:color/black"
+                android:textColorHint="@color/app_color"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/edit_text_input"
+                android:id="@+id/etEditDialog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/_4sdp"
+                android:autofillHints="@null"
                 android:background="@drawable/edit_text_item"
                 android:gravity="center"
-                android:hint="Enter your text"
-                android:inputType="text" />
+                android:inputType="number"
+                tools:ignore="LabelFor" />
 
             <Button
                 android:id="@+id/button_ok"
@@ -53,7 +54,8 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/_2sdp"
                 android:background="@drawable/buttons_item_blue"
-                android:text="OK"
+                android:text="@string/save"
+                android:textAllCaps="false"
                 android:textColor="@color/white" />
 
         </LinearLayout>

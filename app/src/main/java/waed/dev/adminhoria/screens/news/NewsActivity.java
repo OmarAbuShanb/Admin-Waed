@@ -2,6 +2,7 @@ package waed.dev.adminhoria.screens.news;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,54 +10,91 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import java.util.ArrayList;
 
 import waed.dev.adminhoria.adapters.NewsAdapter;
-import waed.dev.adminhoria.models.News;
-import waed.dev.adminhoria.R;
 import waed.dev.adminhoria.databinding.ActivityNewsBinding;
+import waed.dev.adminhoria.firebase.controller.FirebaseController;
+import waed.dev.adminhoria.models.News;
+import waed.dev.adminhoria.screens.dialogs.LoadingDialog;
 
-public class NewsActivity extends AppCompatActivity {
+public class NewsActivity extends AppCompatActivity implements NewsAdapter.NewsListListener,
+        NewsAdapter.DeleteNewsListListener {
+
     private ActivityNewsBinding binding;
+    private FirebaseController firebaseController;
+    private LoadingDialog loadingDialog;
+    private NewsAdapter newsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityNewsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        // Listeners and adapter
+
         init();
     }
 
     private void init() {
-        // setup the Listener
+        firebaseController = FirebaseController.getInstance();
+        loadingDialog = new LoadingDialog();
         setupListeners();
-        // setup the adapter with data
-        setupNewsAdapter(createDummyData());
+        setupNewsAdapter();
+        getNews();
     }
 
-    private ArrayList<News> createDummyData() {
-        ArrayList<News> models = new ArrayList<>();
-        models.add(new News("adslfjasdf", R.drawable.news_example_image, "ماذا حدث في ال17 من نسيان ؟", "يوم الأسير الفلسطيني هو يوم تضامني مع الأسرى الفلسطينيين في السجون والمعتقلات الإسرائيلية، ويوافق 17 نيسان/أبريل من كُل عام.\\n\\nفي عام 1974 أقر المجلس الوطني الفلسطيني باعتباره السلطة العليا لمنظمة التحرير الفلسطينية، خلال دورته العادية يوم السابع عشر من نيسان/أبريل، يومًا وطنيًا للوفاء للأسرى الفلسطينيين وتضحياتهم، باعتباره يوماً لشحذ الهمم وتوحيد الجهود، لنصرتهم ومساندتهم ودعم حقهم بالحرية، ولتكريمهم وللوقوف بجانبهم وبجانب ذويهم، وأيضاً بهدف إثبات الوفاء لشهداء الحركة الأسيرة.ومنذ ذلك التاريخ حتى اليوم يتم إحياء هذا اليوم من كل عام، حيثُ يحيه الشعب الفلسطيني في فلسطين والشتات سنويًا بوسائل وأشكال متعددة."));
-        models.add(new News("adslfjasdf", R.drawable.news_example_image, "ماذا حدث في ال17 من نسيان ؟", "يوم الأسير الفلسطيني هو يوم تضامني مع الأسرى الفلسطينيين في السجون والمعتقلات الإسرائيلية، ويوافق 17 نيسان/أبريل من كُل عام.\\n\\nفي عام 1974 أقر المجلس الوطني الفلسطيني باعتباره السلطة العليا لمنظمة التحرير الفلسطينية، خلال دورته العادية يوم السابع عشر من نيسان/أبريل، يومًا وطنيًا للوفاء للأسرى الفلسطينيين وتضحياتهم، باعتباره يوماً لشحذ الهمم وتوحيد الجهود، لنصرتهم ومساندتهم ودعم حقهم بالحرية، ولتكريمهم وللوقوف بجانبهم وبجانب ذويهم، وأيضاً بهدف إثبات الوفاء لشهداء الحركة الأسيرة.ومنذ ذلك التاريخ حتى اليوم يتم إحياء هذا اليوم من كل عام، حيثُ يحيه الشعب الفلسطيني في فلسطين والشتات سنويًا بوسائل وأشكال متعددة."));
-        models.add(new News("adslfjasdf", R.drawable.news_example_image, "ماذا حدث في ال17 من نسيان ؟", "يوم الأسير الفلسطيني هو يوم تضامني مع الأسرى الفلسطينيين في السجون والمعتقلات الإسرائيلية، ويوافق 17 نيسان/أبريل من كُل عام.\\n\\nفي عام 1974 أقر المجلس الوطني الفلسطيني باعتباره السلطة العليا لمنظمة التحرير الفلسطينية، خلال دورته العادية يوم السابع عشر من نيسان/أبريل، يومًا وطنيًا للوفاء للأسرى الفلسطينيين وتضحياتهم، باعتباره يوماً لشحذ الهمم وتوحيد الجهود، لنصرتهم ومساندتهم ودعم حقهم بالحرية، ولتكريمهم وللوقوف بجانبهم وبجانب ذويهم، وأيضاً بهدف إثبات الوفاء لشهداء الحركة الأسيرة.ومنذ ذلك التاريخ حتى اليوم يتم إحياء هذا اليوم من كل عام، حيثُ يحيه الشعب الفلسطيني في فلسطين والشتات سنويًا بوسائل وأشكال متعددة."));
-        models.add(new News("adslfjasdf", R.drawable.news_example_image, "ماذا حدث في ال17 من نسيان ؟", "يوم الأسير الفلسطيني هو يوم تضامني مع الأسرى الفلسطينيين في السجون والمعتقلات الإسرائيلية، ويوافق 17 نيسان/أبريل من كُل عام.\\n\\nفي عام 1974 أقر المجلس الوطني الفلسطيني باعتباره السلطة العليا لمنظمة التحرير الفلسطينية، خلال دورته العادية يوم السابع عشر من نيسان/أبريل، يومًا وطنيًا للوفاء للأسرى الفلسطينيين وتضحياتهم، باعتباره يوماً لشحذ الهمم وتوحيد الجهود، لنصرتهم ومساندتهم ودعم حقهم بالحرية، ولتكريمهم وللوقوف بجانبهم وبجانب ذويهم، وأيضاً بهدف إثبات الوفاء لشهداء الحركة الأسيرة.ومنذ ذلك التاريخ حتى اليوم يتم إحياء هذا اليوم من كل عام، حيثُ يحيه الشعب الفلسطيني في فلسطين والشتات سنويًا بوسائل وأشكال متعددة."));
-        models.add(new News("adslfjasdf", R.drawable.news_example_image, "ماذا حدث في ال17 من نسيان ؟", "يوم الأسير الفلسطيني هو يوم تضامني مع الأسرى الفلسطينيين في السجون والمعتقلات الإسرائيلية، ويوافق 17 نيسان/أبريل من كُل عام.\\n\\nفي عام 1974 أقر المجلس الوطني الفلسطيني باعتباره السلطة العليا لمنظمة التحرير الفلسطينية، خلال دورته العادية يوم السابع عشر من نيسان/أبريل، يومًا وطنيًا للوفاء للأسرى الفلسطينيين وتضحياتهم، باعتباره يوماً لشحذ الهمم وتوحيد الجهود، لنصرتهم ومساندتهم ودعم حقهم بالحرية، ولتكريمهم وللوقوف بجانبهم وبجانب ذويهم، وأيضاً بهدف إثبات الوفاء لشهداء الحركة الأسيرة.ومنذ ذلك التاريخ حتى اليوم يتم إحياء هذا اليوم من كل عام، حيثُ يحيه الشعب الفلسطيني في فلسطين والشتات سنويًا بوسائل وأشكال متعددة."));
-        models.add(new News("adslfjasdf", R.drawable.news_example_image, "ماذا حدث في ال17 من نسيان ؟", "يوم الأسير الفلسطيني هو يوم تضامني مع الأسرى الفلسطينيين في السجون والمعتقلات الإسرائيلية، ويوافق 17 نيسان/أبريل من كُل عام.\\n\\nفي عام 1974 أقر المجلس الوطني الفلسطيني باعتباره السلطة العليا لمنظمة التحرير الفلسطينية، خلال دورته العادية يوم السابع عشر من نيسان/أبريل، يومًا وطنيًا للوفاء للأسرى الفلسطينيين وتضحياتهم، باعتباره يوماً لشحذ الهمم وتوحيد الجهود، لنصرتهم ومساندتهم ودعم حقهم بالحرية، ولتكريمهم وللوقوف بجانبهم وبجانب ذويهم، وأيضاً بهدف إثبات الوفاء لشهداء الحركة الأسيرة.ومنذ ذلك التاريخ حتى اليوم يتم إحياء هذا اليوم من كل عام، حيثُ يحيه الشعب الفلسطيني في فلسطين والشتات سنويًا بوسائل وأشكال متعددة."));
-        models.add(new News("adslfjasdf", R.drawable.news_example_image, "ماذا حدث في ال17 من نسيان ؟", "يوم الأسير الفلسطيني هو يوم تضامني مع الأسرى الفلسطينيين في السجون والمعتقلات الإسرائيلية، ويوافق 17 نيسان/أبريل من كُل عام.\\n\\nفي عام 1974 أقر المجلس الوطني الفلسطيني باعتباره السلطة العليا لمنظمة التحرير الفلسطينية، خلال دورته العادية يوم السابع عشر من نيسان/أبريل، يومًا وطنيًا للوفاء للأسرى الفلسطينيين وتضحياتهم، باعتباره يوماً لشحذ الهمم وتوحيد الجهود، لنصرتهم ومساندتهم ودعم حقهم بالحرية، ولتكريمهم وللوقوف بجانبهم وبجانب ذويهم، وأيضاً بهدف إثبات الوفاء لشهداء الحركة الأسيرة.ومنذ ذلك التاريخ حتى اليوم يتم إحياء هذا اليوم من كل عام، حيثُ يحيه الشعب الفلسطيني في فلسطين والشتات سنويًا بوسائل وأشكال متعددة."));
-        models.add(new News("adslfjasdf", R.drawable.news_example_image, "ماذا حدث في ال17 من نسيان ؟", "يوم الأسير الفلسطيني هو يوم تضامني مع الأسرى الفلسطينيين في السجون والمعتقلات الإسرائيلية، ويوافق 17 نيسان/أبريل من كُل عام.\\n\\nفي عام 1974 أقر المجلس الوطني الفلسطيني باعتباره السلطة العليا لمنظمة التحرير الفلسطينية، خلال دورته العادية يوم السابع عشر من نيسان/أبريل، يومًا وطنيًا للوفاء للأسرى الفلسطينيين وتضحياتهم، باعتباره يوماً لشحذ الهمم وتوحيد الجهود، لنصرتهم ومساندتهم ودعم حقهم بالحرية، ولتكريمهم وللوقوف بجانبهم وبجانب ذويهم، وأيضاً بهدف إثبات الوفاء لشهداء الحركة الأسيرة.ومنذ ذلك التاريخ حتى اليوم يتم إحياء هذا اليوم من كل عام، حيثُ يحيه الشعب الفلسطيني في فلسطين والشتات سنويًا بوسائل وأشكال متعددة."));
-        models.add(new News("adslfjasdf", R.drawable.news_example_image, "ماذا حدث في ال17 من نسيان ؟", "يوم الأسير الفلسطيني هو يوم تضامني مع الأسرى الفلسطينيين في السجون والمعتقلات الإسرائيلية، ويوافق 17 نيسان/أبريل من كُل عام.\\n\\nفي عام 1974 أقر المجلس الوطني الفلسطيني باعتباره السلطة العليا لمنظمة التحرير الفلسطينية، خلال دورته العادية يوم السابع عشر من نيسان/أبريل، يومًا وطنيًا للوفاء للأسرى الفلسطينيين وتضحياتهم، باعتباره يوماً لشحذ الهمم وتوحيد الجهود، لنصرتهم ومساندتهم ودعم حقهم بالحرية، ولتكريمهم وللوقوف بجانبهم وبجانب ذويهم، وأيضاً بهدف إثبات الوفاء لشهداء الحركة الأسيرة.ومنذ ذلك التاريخ حتى اليوم يتم إحياء هذا اليوم من كل عام، حيثُ يحيه الشعب الفلسطيني في فلسطين والشتات سنويًا بوسائل وأشكال متعددة."));
-        return models;
+    private void getNews() {
+        binding.progressNews.setVisibility(View.VISIBLE);
+        firebaseController.getNews(new FirebaseController.GetNewsCallback() {
+            @Override
+            public void onSuccess(ArrayList<News> news) {
+                binding.progressNews.setVisibility(View.GONE);
+                updateNewsAdapter(news);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+
+            }
+        });
     }
 
-    private void setupNewsAdapter(ArrayList<News> models) {
-        NewsAdapter adapter = new NewsAdapter(models);
-        binding.newsRecyclerView.setAdapter(adapter);
+    private void setupNewsAdapter() {
+        newsAdapter = new NewsAdapter(new ArrayList<>());
+        binding.newsRecyclerView.setAdapter(newsAdapter);
         binding.newsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.newsRecyclerView.setHasFixedSize(true);
     }
 
-    private void setupListeners() {
-        binding.floatAddNews.setOnClickListener(view ->
-                startActivity(new Intent(NewsActivity.this, AddNewsActivity.class))
-        );
+    private void updateNewsAdapter(ArrayList<News> models) {
+        newsAdapter.setNews(models);
+        newsAdapter.setNewsListCallback(this);
+        newsAdapter.setDeleteNewsCallback(this);
     }
 
+    private void setupListeners() {
+        binding.floatAddNews.setOnClickListener(view ->
+                startActivity(new Intent(getBaseContext(), AddNewsActivity.class)));
+    }
+
+    @Override
+    public void onClickItemListener(News model) {
+        Intent intent = new Intent(getBaseContext(), AddNewsActivity.class);
+        intent.putExtra("model", model);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickDeleteListener(String newsId, int positionItem) {
+        loadingDialog.show(getSupportFragmentManager(), "deleteNews");
+        firebaseController.deleteNews(newsId, new FirebaseController.FirebaseCallback() {
+            @Override
+            public void onSuccess() {
+                loadingDialog.dismiss();
+                newsAdapter.removeItem(positionItem);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                loadingDialog.dismiss();
+            }
+        });
+    }
 }

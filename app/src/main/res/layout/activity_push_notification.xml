@@ -109,7 +109,7 @@
                         android:background="?android:attr/listDivider" />
 
                     <Button
-                        android:id="@+id/btnAddNews"
+                        android:id="@+id/buPushNotification"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_10sdp"

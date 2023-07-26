@@ -9,18 +9,32 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import waed.dev.adminhoria.Utils.UtilsGeneral;
 import waed.dev.adminhoria.databinding.ItemPosterBinding;
+import waed.dev.adminhoria.models.Poster;
 
 
 public class PrisonerPostersAdapter extends RecyclerView.Adapter<PrisonerPostersAdapter.PosterViewHolder> {
-    private ArrayList<Integer> postersImage;
+    private ArrayList<Poster> posters;
 
-    public PrisonerPostersAdapter(ArrayList<Integer> postersImage) {
-        this.postersImage = postersImage;
+    private DeletePostersListListener deletePostersListListener;
+
+    public void setDeletePrisonerPostersListListener(DeletePostersListListener deletePostersListListener) {
+        this.deletePostersListListener = deletePostersListListener;
     }
 
-    public void setPostersImage(ArrayList<Integer> postersImage) {
-        this.postersImage = postersImage;
+    public PrisonerPostersAdapter(ArrayList<Poster> posters) {
+        this.posters = posters;
+    }
+
+    public void setPosters(ArrayList<Poster> posters) {
+        this.posters = posters;
+        notifyItemRangeInserted(0, posters.size());
+    }
+
+    public void removeItem(int position) {
+        posters.remove(position);
+        notifyItemRemoved(position);
     }
 
     @NonNull
@@ -33,17 +47,26 @@ public class PrisonerPostersAdapter extends RecyclerView.Adapter<PrisonerPosters
 
     @Override
     public void onBindViewHolder(@NonNull PosterViewHolder holder, int position) {
-        holder.bind(postersImage.get(position));
+        Poster poster = posters.get(position);
+        holder.bind(poster,position);
+
+        holder.setDeletePrisonerPostersListListener(deletePostersListListener);
     }
 
     @Override
     public int getItemCount() {
-        return postersImage.size();
+        return posters.size();
     }
 
     static class PosterViewHolder extends RecyclerView.ViewHolder {
         private final ItemPosterBinding binding;
         private final Context context;
+
+        private DeletePostersListListener deletePostersListListener;
+
+        protected void setDeletePrisonerPostersListListener(DeletePostersListListener deletePostersListListener) {
+            this.deletePostersListListener = deletePostersListListener;
+        }
 
         public PosterViewHolder(ItemPosterBinding binding) {
             super(binding.getRoot());
@@ -51,8 +74,18 @@ public class PrisonerPostersAdapter extends RecyclerView.Adapter<PrisonerPosters
             context = binding.getRoot().getContext();
         }
 
-        public void bind(Integer integer) {
-            binding.ivPoster.setImageResource(integer);
+        public void bind(Poster poster, int position) {
+            UtilsGeneral.getInstance()
+                    .loadImage(context, poster.getImageUrl())
+                    .fitCenter()
+                    .into(binding.ivPoster);
+
+            binding.btnDeleteBook.setOnClickListener(v ->
+                    deletePostersListListener.onClickDeleteListener(poster.getId(), position));
         }
+    }
+
+    public interface DeletePostersListListener {
+        void onClickDeleteListener(String prisonerPosterId, int positionItem);
     }
 }
