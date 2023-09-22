@@ -1,5 +1,6 @@
 package waed.dev.adminhoria.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,54 +10,53 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import waed.dev.adminhoria.Utils.UtilsGeneral;
-import waed.dev.adminhoria.databinding.NewsItemBinding;
+import waed.dev.adminhoria.databinding.ItemNewsBinding;
 import waed.dev.adminhoria.models.News;
+import waed.dev.adminhoria.utils.UtilsGeneral;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder> {
     private ArrayList<News> news;
-
     private NewsListListener newsListListener;
-    private DeleteNewsListListener deleteNewsListListener;
 
     public void setNewsListCallback(NewsListListener newsListListener) {
         this.newsListListener = newsListListener;
     }
 
-    public void setDeleteNewsCallback(DeleteNewsListListener deleteNewsListListener) {
-        this.deleteNewsListListener = deleteNewsListListener;
+    public NewsAdapter() {
+        this.news = new ArrayList<>();
     }
 
-    public NewsAdapter(ArrayList<News> news) {
+    @SuppressLint("NotifyDataSetChanged")
+    public void setData(ArrayList<News> news) {
         this.news = news;
+        notifyDataSetChanged();
     }
 
-    public void setNews(ArrayList<News> news) {
-        this.news = news;
-        notifyItemRangeInserted(0, news.size());
-    }
-
-    public void removeItem(int position) {
-        news.remove(position);
-        notifyItemRemoved(position);
+    public void removeItem(String id) {
+        for (int i = 0; i < news.size(); i++) {
+            if (news.get(i).getUuid().equals(id)) {
+                news.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
     }
 
     @NonNull
     @Override
     public NewsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        NewsItemBinding binding =
-                NewsItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ItemNewsBinding binding = ItemNewsBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false
+        );
         return new NewsViewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NewsViewHolder holder, int position) {
         News model = news.get(position);
-        holder.bind(model, position);
+        holder.bind(model);
 
         holder.setNewsListCallback(newsListListener);
-        holder.setDeleteNewsCallback(deleteNewsListListener);
-
     }
 
     @Override
@@ -65,26 +65,21 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
     }
 
     static class NewsViewHolder extends RecyclerView.ViewHolder {
-        private final NewsItemBinding binding;
+        private final ItemNewsBinding binding;
         private final Context context;
         private NewsListListener newsListListener;
-        private DeleteNewsListListener deleteNewsListListener;
 
-        protected void setNewsListCallback(NewsListListener newsListListener) {
+        public void setNewsListCallback(NewsListListener newsListListener) {
             this.newsListListener = newsListListener;
         }
 
-        protected void setDeleteNewsCallback(DeleteNewsListListener deleteNewsListListener) {
-            this.deleteNewsListListener = deleteNewsListListener;
-        }
-
-        public NewsViewHolder(@NonNull NewsItemBinding binding) {
+        public NewsViewHolder(@NonNull ItemNewsBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             context = binding.getRoot().getContext();
         }
 
-        void bind(News model, int position) {
+        void bind(News model) {
             binding.newsTitle.setText(model.getTitle());
 
             UtilsGeneral.getInstance()
@@ -94,15 +89,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
             binding.buNewsCard.setOnClickListener(v -> newsListListener.onClickItemListener(model));
 
             binding.btnDeleteNews.setOnClickListener(v ->
-                    deleteNewsListListener.onClickDeleteListener(model.getId(), position));
+                    newsListListener.onClickDeleteListener(model.getUuid(), model.getImageUrl()));
         }
     }
 
     public interface NewsListListener {
         void onClickItemListener(News model);
-    }
 
-    public interface DeleteNewsListListener {
-        void onClickDeleteListener(String newsId, int positionItem);
+        void onClickDeleteListener(String newsId,String imageUrl);
     }
 }

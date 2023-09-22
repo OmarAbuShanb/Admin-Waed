@@ -1,20 +1,30 @@
 package waed.dev.adminhoria.screens.statistics;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 
-import waed.dev.adminhoria.Tools.CustomDialogManager;
+import waed.dev.adminhoria.adapters.StatisticsAdapter;
 import waed.dev.adminhoria.databinding.ActivityPrisonersStatisticsBinding;
 import waed.dev.adminhoria.firebase.controller.FirebaseController;
+import waed.dev.adminhoria.models.Statistic;
 import waed.dev.adminhoria.screens.dialogs.LoadingDialog;
+import waed.dev.adminhoria.utils.UtilsGeneral;
 
-public class PrisonersStatisticsActivity extends AppCompatActivity {
+public class PrisonersStatisticsActivity extends AppCompatActivity
+        implements StatisticsAdapter.StatisticListListener {
     private ActivityPrisonersStatisticsBinding binding;
+    private StatisticsAdapter statisticsAdapter;
 
     private FirebaseController firebaseController;
     private LoadingDialog loadingDialog;
@@ -33,20 +43,57 @@ public class PrisonersStatisticsActivity extends AppCompatActivity {
         loadingDialog = new LoadingDialog();
 
         setupListeners();
+        setupStatisticsAdapter();
+        attachItemTouchHelperToRecycler();
         getStatistics();
     }
 
-    private void getStatistics() {
-        binding.scrollContent.setVisibility(View.GONE);
-        binding.progressStatistics.setVisibility(View.VISIBLE);
+    private void setupListeners() {
+        binding.floatAddStatistics.setOnClickListener(view ->
+                startActivity(new Intent(getBaseContext(), AddPrisonersStatisticActivity.class)));
+    }
 
-        firebaseController.getStatistics(new FirebaseController.GetStatisticsCallback() {
+    private void setupStatisticsAdapter() {
+        statisticsAdapter = new StatisticsAdapter();
+        binding.statisticsRecycler.setAdapter(statisticsAdapter);
+        binding.statisticsRecycler.setLayoutManager(new LinearLayoutManager(this));
+        binding.statisticsRecycler.setHasFixedSize(true);
+
+        statisticsAdapter.setStatisticListCallback(this);
+    }
+
+    private void attachItemTouchHelperToRecycler() {
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.RIGHT) {
             @Override
-            public void onSuccess(Map<String, String> statistics) {
-                putData(statistics);
+            public boolean onMove(@NonNull RecyclerView recyclerView,
+                                  @NonNull RecyclerView.ViewHolder viewHolder,
+                                  @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
 
-                binding.scrollContent.setVisibility(View.VISIBLE);
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                String uuid = statisticsAdapter.removeStatistic(position);
+                System.out.println("onSwiped " + uuid);
+                deleteStatistics(uuid);
+            }
+        }).attachToRecyclerView(binding.statisticsRecycler);
+    }
+
+    private void getStatistics() {
+        binding.progressStatistics.setVisibility(View.VISIBLE);
+        binding.tvDateOfLastUpdate.setVisibility(View.GONE);
+
+        firebaseController.getStatistics(new FirebaseController.GetDataCallback<>() {
+            @Override
+            public void onSuccess(ArrayList<Statistic> statistics) {
                 binding.progressStatistics.setVisibility(View.GONE);
+
+                if (!statistics.isEmpty()) {
+                    statisticsAdapter.setData(statistics);
+                    setDateOfLastStatisticsUpdate(statistics);
+                }
             }
 
             @Override
@@ -56,52 +103,37 @@ public class PrisonersStatisticsActivity extends AppCompatActivity {
         });
     }
 
-    private void putData(Map<String, String> statistics) {
-        binding.tvNumOfMartyrsOfCaptiveMovement.setText(statistics.get("numberOfMartyrsOfCaptiveMovement"));
-        binding.tvNumOfChildCaptives.setText(statistics.get("numberOfChildCaptives"));
-        binding.tvNumOfGirlPrisonerInsidePrisons.setText(statistics.get("numberOfGirlPrisonerInsidePrisons"));
-        binding.tvNumOfSickPrisoner.setText(statistics.get("numberOfSickPrisoner"));
-        binding.tvNumOfPrisonersWhoSpentMoreThan30Scholars.setText(statistics.get("numberOfPrisonersWhoSpentMoreThan30Scholars"));
-        binding.tvNumOfPrisonerSentencedToLife.setText(statistics.get("numberOfPrisonerSentencedToLife"));
-        binding.tvNumOfPrisonerInsidePrisons.setText(statistics.get("numberOfPrisonerInsidePrisons"));
-        binding.tvNumOfAdministrativeDetention.setText(statistics.get("numberOfAdministrativeDetention"));
+    private void setDateOfLastStatisticsUpdate(ArrayList<Statistic> statistics) {
+        // sort statistics using timestamp
+        Collections.sort(statistics, (statistic1, statistics2) ->
+                statistic1.getTimestamp().compareTo(statistics2.getTimestamp()));
+
+        Statistic lastStatistic = statistics.get(statistics.size() - 1);
+        Date lastStatisticDate = lastStatistic.getTimestamp().toDate();
+        String lastUpdate = UtilsGeneral.getInstance().getStringDateFromDate(lastStatisticDate);
+        binding.tvDateOfLastUpdate.setText(lastUpdate);
+        binding.tvDateOfLastUpdate.setVisibility(View.VISIBLE);
     }
 
-    private void setupListeners() {
-        binding.tvNumOfMartyrsOfCaptiveMovement.setOnClickListener(v ->
-                onClickStatisticNumber(v, "numberOfMartyrsOfCaptiveMovement"));
-        binding.tvNumOfChildCaptives.setOnClickListener(v ->
-                onClickStatisticNumber(v, "numberOfChildCaptives"));
-        binding.tvNumOfGirlPrisonerInsidePrisons.setOnClickListener(v ->
-                onClickStatisticNumber(v, "numberOfGirlPrisonerInsidePrisons"));
-        binding.tvNumOfSickPrisoner.setOnClickListener(v ->
-                onClickStatisticNumber(v, "numberOfSickPrisoner"));
-        binding.tvNumOfPrisonersWhoSpentMoreThan30Scholars.setOnClickListener(v ->
-                onClickStatisticNumber(v, "numberOfPrisonersWhoSpentMoreThan30Scholars"));
-        binding.tvNumOfPrisonerSentencedToLife.setOnClickListener(v ->
-                onClickStatisticNumber(v, "numberOfPrisonerSentencedToLife"));
-        binding.tvNumOfPrisonerInsidePrisons.setOnClickListener(v ->
-                onClickStatisticNumber(v, "numberOfPrisonerInsidePrisons"));
-        binding.tvNumOfAdministrativeDetention.setOnClickListener(v ->
-                onClickStatisticNumber(v, "numberOfAdministrativeDetention"));
-    }
-
-    private void onClickStatisticNumber(View view, String key) {
-        String oldValue = ((TextView) view).getText().toString();
-        CustomDialogManager.showDialog(
-                PrisonersStatisticsActivity.this,
-                oldValue,
-                newValue -> {
-                    updateStatistics(key, newValue, view);
-                });
-    }
-
-    private void updateStatistics(String key, String newValue, View view) {
-        loadingDialog.show(getSupportFragmentManager(), "updateStatistics");
-        firebaseController.updateStatistics(key, newValue, new FirebaseController.FirebaseCallback() {
+    private void deleteStatistics(String uuid) {
+        loadingDialog.show(getSupportFragmentManager(), "deleteStatistics");
+        firebaseController.deleteStatistic(uuid, new FirebaseController.FirebaseCallback() {
             @Override
             public void onSuccess() {
-                ((TextView) view).setText(newValue);
+                deleteStatisticFiles(uuid);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                loadingDialog.dismiss();
+            }
+        });
+    }
+
+    private void deleteStatisticFiles(String uuid) {
+        firebaseController.deleteStatisticFiles(uuid, new FirebaseController.FirebaseCallback() {
+            @Override
+            public void onSuccess() {
                 loadingDialog.dismiss();
             }
 
@@ -110,5 +142,12 @@ public class PrisonersStatisticsActivity extends AppCompatActivity {
                 loadingDialog.dismiss();
             }
         });
+    }
+
+    @Override
+    public void onClickStatisticItemListener(Statistic model) {
+        Intent intent = new Intent(this, AddPrisonersStatisticActivity.class);
+        intent.putExtra("model", model);
+        startActivity(intent);
     }
 }

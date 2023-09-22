@@ -9,26 +9,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import waed.dev.adminhoria.Utils.UtilsGeneral;
-import waed.dev.adminhoria.databinding.PrisonerCardItemBinding;
+import waed.dev.adminhoria.databinding.ItemPrisonerCardBinding;
 import waed.dev.adminhoria.models.PrisonerCard;
+import waed.dev.adminhoria.utils.UtilsGeneral;
 
 public class PrisonerCardAdapter extends RecyclerView.Adapter<PrisonerCardAdapter.viewHolder> {
     private ArrayList<PrisonerCard> prisonerCards;
     private PrisonersCardsListListener prisonersCardsListListener;
-    private DeletePrisonersCardsListListener deletePrisonersCardsListListener;
 
     public void setNewsListCallback(PrisonersCardsListListener prisonersCardsListListener) {
         this.prisonersCardsListListener = prisonersCardsListListener;
     }
 
-    public void setDeleteNewsCallback(DeletePrisonersCardsListListener deletePrisonersCardsListListener) {
-        this.deletePrisonersCardsListListener = deletePrisonersCardsListListener;
-    }
-
-
-    public PrisonerCardAdapter(ArrayList<PrisonerCard> prisonerCards) {
-        this.prisonerCards = prisonerCards;
+    public PrisonerCardAdapter() {
+        this.prisonerCards = new ArrayList<>();
     }
 
     public void setPrisonerCards(ArrayList<PrisonerCard> prisonerCards) {
@@ -36,26 +30,31 @@ public class PrisonerCardAdapter extends RecyclerView.Adapter<PrisonerCardAdapte
         notifyItemRangeInserted(0, prisonerCards.size());
     }
 
-    public void removeItem(int position) {
-        prisonerCards.remove(position);
-        notifyItemRemoved(position);
+    public void removeItem(String id) {
+        for (int i = 0; i < prisonerCards.size(); i++) {
+            if (prisonerCards.get(i).getUuid().equals(id)) {
+                prisonerCards.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
     }
 
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        PrisonerCardItemBinding binding
-                = PrisonerCardItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ItemPrisonerCardBinding binding = ItemPrisonerCardBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false
+        );
         return new viewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         PrisonerCard model = prisonerCards.get(position);
-        holder.bind(model, position);
+        holder.bind(model);
 
         holder.setNewsListCallback(prisonersCardsListListener);
-        holder.setDeleteNewsCallback(deletePrisonersCardsListListener);
     }
 
     @Override
@@ -64,28 +63,22 @@ public class PrisonerCardAdapter extends RecyclerView.Adapter<PrisonerCardAdapte
     }
 
     static class viewHolder extends RecyclerView.ViewHolder {
-        private final PrisonerCardItemBinding binding;
+        private final ItemPrisonerCardBinding binding;
         private final Context context;
 
         private PrisonersCardsListListener prisonersCardsListListener;
-        private DeletePrisonersCardsListListener deletePrisonersCardsListListener;
 
-        protected void setNewsListCallback(PrisonersCardsListListener prisonersCardsListListener) {
+        public void setNewsListCallback(PrisonersCardsListListener prisonersCardsListListener) {
             this.prisonersCardsListListener = prisonersCardsListListener;
         }
 
-        protected void setDeleteNewsCallback(DeletePrisonersCardsListListener deletePrisonersCardsListListener) {
-            this.deletePrisonersCardsListListener = deletePrisonersCardsListListener;
-        }
-
-
-        public viewHolder(@NonNull PrisonerCardItemBinding binding) {
+        public viewHolder(@NonNull ItemPrisonerCardBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
             context = binding.getRoot().getContext();
         }
 
-        void bind(PrisonerCard model, int position) {
+        void bind(PrisonerCard model) {
             binding.prisonerName.setText(model.getName());
 
             UtilsGeneral.getInstance()
@@ -95,16 +88,14 @@ public class PrisonerCardAdapter extends RecyclerView.Adapter<PrisonerCardAdapte
             binding.prisonerCard.setOnClickListener(v ->
                     prisonersCardsListListener.onClickItemListener(model));
 
-            binding.btnDeletePrisoner.setOnClickListener(v ->
-                    deletePrisonersCardsListListener.onClickDeleteListener(model.getId(), position));
+            binding.btnDeletePrisonerCard.setOnClickListener(v ->
+                    prisonersCardsListListener.onClickDeleteListener(model.getUuid(), model.getImageUrl()));
         }
     }
 
     public interface PrisonersCardsListListener {
         void onClickItemListener(PrisonerCard model);
-    }
 
-    public interface DeletePrisonersCardsListListener {
-        void onClickDeleteListener(String prisonerCardId, int positionItem);
+        void onClickDeleteListener(String prisonerCardId, String imageUrl);
     }
 }

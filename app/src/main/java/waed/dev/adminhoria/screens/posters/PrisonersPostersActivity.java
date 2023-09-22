@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
-import waed.dev.adminhoria.Utils.RotationPageTransformer;
 import waed.dev.adminhoria.adapters.PrisonerPostersAdapter;
 import waed.dev.adminhoria.databinding.ActivityPrisonersPostersBinding;
 import waed.dev.adminhoria.firebase.controller.FirebaseController;
@@ -44,16 +43,23 @@ public class PrisonersPostersActivity extends AppCompatActivity
 
     private void setupListeners() {
         binding.floatAddPoster.setOnClickListener(view ->
-                startActivity(new Intent(getBaseContext(), AddPosterActivity.class)));
+                startActivity(new Intent(getBaseContext(), AddPrisonerPosterActivity.class)));
+    }
+
+    private void setupPrisonerPostersAdapter() {
+        prisonerPostersAdapter = new PrisonerPostersAdapter();
+        binding.postersPager.setAdapter(prisonerPostersAdapter);
+
+        prisonerPostersAdapter.setDeletePrisonerPostersListListener(this);
     }
 
     private void getPosters() {
         binding.progressPrisonersPosters.setVisibility(View.VISIBLE);
-        firebaseController.getPosters(new FirebaseController.GetPostersCallback() {
+        firebaseController.getPosters(new FirebaseController.GetDataCallback<>() {
             @Override
             public void onSuccess(ArrayList<Poster> posters) {
                 binding.progressPrisonersPosters.setVisibility(View.GONE);
-                updatePrisonerPostersAdapter(posters);
+                prisonerPostersAdapter.setData(posters);
             }
 
             @Override
@@ -63,27 +69,12 @@ public class PrisonersPostersActivity extends AppCompatActivity
         });
     }
 
-    private void setupPrisonerPostersAdapter() {
-        prisonerPostersAdapter = new PrisonerPostersAdapter(new ArrayList<>());
-        binding.postersPager.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
-        binding.postersPager.setPageTransformer(new RotationPageTransformer(160));
-        binding.postersPager.setAdapter(prisonerPostersAdapter);
-    }
-
-    private void updatePrisonerPostersAdapter(ArrayList<Poster> models) {
-        prisonerPostersAdapter.setPosters(models);
-        prisonerPostersAdapter.setDeletePrisonerPostersListListener(this);
-    }
-
-
-    @Override
-    public void onClickDeleteListener(String prisonerPosterId, int positionItem) {
+    private void deletePoster(String prisonerPosterId, String imageUrl) {
         loadingDialog.show(getSupportFragmentManager(), "deletePoster");
         firebaseController.deletePoster(prisonerPosterId, new FirebaseController.FirebaseCallback() {
             @Override
             public void onSuccess() {
-                loadingDialog.dismiss();
-                prisonerPostersAdapter.removeItem(positionItem);
+                deletePosterImage(prisonerPosterId, imageUrl);
             }
 
             @Override
@@ -91,5 +82,25 @@ public class PrisonersPostersActivity extends AppCompatActivity
                 loadingDialog.dismiss();
             }
         });
+    }
+
+    private void deletePosterImage(String prisonerPosterId, String imageUrl) {
+        firebaseController.deleteFileUsingUrl(imageUrl, new FirebaseController.FirebaseCallback() {
+            @Override
+            public void onSuccess() {
+                loadingDialog.dismiss();
+                prisonerPostersAdapter.removeItem(prisonerPosterId);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                loadingDialog.dismiss();
+            }
+        });
+    }
+
+    @Override
+    public void onClickDeleteListener(String prisonerPosterId, String imageUrl) {
+        deletePoster(prisonerPosterId, imageUrl);
     }
 }

@@ -1,34 +1,41 @@
 package waed.dev.adminhoria.models;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.ServerTimestamp;
+
 import java.io.Serializable;
 
 public class PrisonerCard implements Serializable {
-    private String id;
+    private String uuid;
     private String imageUrl;
     private String name;
     private String dateOfArrest;
     private String judgment;
     private String living;
 
+    @ServerTimestamp
+    private transient Timestamp timestamp;
+
     public PrisonerCard() {
 
     }
 
-    public PrisonerCard(String id, String imageUrl, String name, String dateOfArrest, String judgment, String living) {
-        this.id = id;
+    public PrisonerCard(String uuid, String imageUrl, String name, String dateOfArrest, String judgment, String living, Timestamp timestamp) {
+        this.uuid = uuid;
         this.imageUrl = imageUrl;
         this.name = name;
         this.dateOfArrest = dateOfArrest;
         this.judgment = judgment;
         this.living = living;
+        this.timestamp = timestamp;
     }
 
-    public String getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getImageUrl() {
@@ -69,5 +76,13 @@ public class PrisonerCard implements Serializable {
 
     public void setLiving(String living) {
         this.living = living;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }

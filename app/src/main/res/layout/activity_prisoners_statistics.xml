@@ -10,14 +10,13 @@
         android:id="@+id/headContentName"
         style="@style/CustomAppBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_54sdp"
+        android:layout_height="wrap_content"
         android:text="@string/prisoner_statistics"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
-        android:id="@+id/scrollContent"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,329 +25,50 @@
         app:layout_constraintTop_toBottomOf="@+id/headContentName">
 
         <LinearLayout
-            android:id="@+id/cardsLinear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <androidx.cardview.widget.CardView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/statisticsRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                app:cardCornerRadius="@dimen/_8sdp">
+                tools:itemCount="6"
+                tools:listitem="@layout/item_statistics" />
 
-                <LinearLayout
-                    android:id="@+id/cardNumOfMartyrsOfCaptiveMovement"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_15sdp"
-                    android:paddingStart="@dimen/_22sdp"
-                    android:paddingEnd="@dimen/_28sdp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/cairo_medium"
-                        android:text="@string/martyrs_of_the_captive_movement"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp" />
-
-                    <TextView
-                        android:id="@+id/tvNumOfMartyrsOfCaptiveMovement"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_30sdp"
-                        android:fontFamily="@font/cairo_bold"
-                        android:text="232"
-                        android:textColor="@color/app_color"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
+            <TextView
+                android:id="@+id/tvDateOfLastUpdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_8sdp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_15sdp"
-                    android:paddingStart="@dimen/_22sdp"
-                    android:paddingEnd="@dimen/_28sdp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/cairo_medium"
-                        android:text="@string/child_captive"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp" />
-
-                    <TextView
-                        android:id="@+id/tvNumOfChildCaptives"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_30sdp"
-                        android:fontFamily="@font/cairo_bold"
-                        android:text="150"
-                        android:textColor="@color/app_color"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_8sdp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_15sdp"
-                    android:paddingStart="@dimen/_22sdp"
-                    android:paddingEnd="@dimen/_28sdp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/cairo_medium"
-                        android:text="@string/girl_prisoner_inside_prisons"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp" />
-
-                    <TextView
-                        android:id="@+id/tvNumOfGirlPrisonerInsidePrisons"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_30sdp"
-                        android:fontFamily="@font/cairo_bold"
-                        android:text="34"
-                        android:textColor="@color/app_color"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_8sdp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_15sdp"
-                    android:paddingStart="@dimen/_22sdp"
-                    android:paddingEnd="@dimen/_28sdp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/cairo_medium"
-                        android:text="@string/sick_prisoner"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp" />
-
-                    <TextView
-                        android:id="@+id/tvNumOfSickPrisoner"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_30sdp"
-                        android:fontFamily="@font/cairo_bold"
-                        android:text="600"
-                        android:textColor="@color/app_color"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_8sdp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_15sdp"
-                    android:paddingStart="@dimen/_22sdp"
-                    android:paddingEnd="@dimen/_28sdp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/cairo_medium"
-                        android:text="@string/prisoner_he_spent_more_than_30_scholars"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp" />
-
-                    <TextView
-                        android:id="@+id/tvNumOfPrisonersWhoSpentMoreThan30Scholars"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_30sdp"
-                        android:fontFamily="@font/cairo_bold"
-                        android:text="16"
-                        android:textColor="@color/app_color"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_8sdp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_15sdp"
-                    android:paddingStart="@dimen/_22sdp"
-                    android:paddingEnd="@dimen/_28sdp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/cairo_medium"
-                        android:text="@string/prisoner_sentenced_to_life"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp" />
-
-                    <TextView
-                        android:id="@+id/tvNumOfPrisonerSentencedToLife"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_30sdp"
-                        android:fontFamily="@font/cairo_bold"
-                        android:text="551"
-                        android:textColor="@color/app_color"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginVertical="@dimen/_5sdp"
-                app:cardCornerRadius="@dimen/_8sdp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_15sdp"
-                    android:paddingStart="@dimen/_22sdp"
-                    android:paddingEnd="@dimen/_28sdp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/cairo_medium"
-                        android:text="@string/prisoner_inside_prisons"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp" />
-
-
-                    <TextView
-                        android:id="@+id/tvNumOfPrisonerInsidePrisons"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_30sdp"
-                        android:fontFamily="@font/cairo_bold"
-                        android:text="4700"
-                        android:textColor="@color/app_color"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                app:cardCornerRadius="@dimen/_8sdp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_15sdp"
-                    android:paddingStart="@dimen/_22sdp"
-                    android:paddingEnd="@dimen/_28sdp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/cairo_medium"
-                        android:text="@string/administrative_detention"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_14ssp" />
-
-                    <TextView
-                        android:id="@+id/tvNumOfAdministrativeDetention"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_30sdp"
-                        android:fontFamily="@font/cairo_bold"
-                        android:text="835"
-                        android:textColor="@color/app_color"
-                        android:textSize="@dimen/_15ssp" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
+                android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/_6sdp"
+                android:gravity="center"
+                android:textColor="@color/place_holder_color"
+                android:textSize="@dimen/_12ssp"
+                android:textStyle="bold"
+                android:visibility="visible"
+                tools:text="31/07/2023" />
 
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatAddStatistics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:contentDescription="Float Add Statistics"
+        android:src="@drawable/ic_add"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressStatistics"
-        style="@style/CircularProgressStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_50sdp"
-        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

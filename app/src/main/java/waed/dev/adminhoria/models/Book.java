@@ -1,34 +1,38 @@
 package waed.dev.adminhoria.models;
 
-import android.os.Parcelable;
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.ServerTimestamp;
 
 import java.io.Serializable;
 
 public class Book implements Serializable {
-    private String id;
+    private String uuid;
     private String imageUrl;
     private String name;
     private String author;
     private String pdfUrl;
 
+    @ServerTimestamp
+    private transient Timestamp timestamp;
 
     public Book() {
     }
 
-    public Book(String id, String imageUrl, String name, String author, String pdfUrl) {
-        this.id = id;
+    public Book(String uuid, String imageUrl, String name, String author, String pdfUrl, Timestamp timestamp) {
+        this.uuid = uuid;
         this.imageUrl = imageUrl;
         this.name = name;
         this.author = author;
         this.pdfUrl = pdfUrl;
+        this.timestamp = timestamp;
     }
 
-    public String getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getImageUrl() {
@@ -61,5 +65,13 @@ public class Book implements Serializable {
 
     public void setPdfUrl(String pdfUrl) {
         this.pdfUrl = pdfUrl;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }

@@ -10,35 +10,48 @@
         android:id="@+id/headContentName"
         style="@style/CustomAppBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_54sdp"
+        android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingStart="@dimen/_15sdp"
-        android:text="@string/admin_horia"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:text="@string/home"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="RtlSymmetry" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/btnAddAdmin"
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:layout_marginEnd="@dimen/_15sdp"
-        android:background="@drawable/edit_text_item"
-        android:fontFamily="@font/cairo_bold"
-        android:gravity="center"
-        android:padding="@dimen/_4sdp"
-        android:text="@string/add_admin"
-        android:textColor="@color/app_color"
-        android:textSize="@dimen/_12ssp"
-        app:drawableEndCompat="@drawable/ic_add_float"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:elevation="0dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/_15sdp"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="@+id/headContentName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/btnAddAdmin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/_8sdp"
+            android:gravity="center_vertical"
+            android:padding="@dimen/_8sdp"
+            android:text="@string/add_admin"
+            android:textColor="@color/app_color"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/ic_person_add" />
+
+    </com.google.android.material.card.MaterialCardView>
+
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,93 +69,105 @@
                 android:id="@+id/topLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <EditText
-                    android:id="@+id/etArgentNews"
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/TextInputLayoutBoxCornerRadiusStyle"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_6sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
                     android:layout_weight="1"
-                    android:background="@drawable/edit_text_item"
-                    android:focusableInTouchMode="true"
-                    android:fontFamily="@font/cairo_medium"
-                    android:gravity="center"
-                    android:hint="Enter urgent news"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    app:hintEnabled="false">
 
-                <Button
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edArgentNews"
+                        style="@style/TextInputEditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/add_images_from_gallery" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/btnUpdateUrgentNews"
-                    android:layout_width="@dimen/_40sdp"
-                    android:layout_height="@dimen/_40sdp"
-                    android:layout_gravity="center"
-                    android:layout_margin="@dimen/_10sdp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/float_button_style"
-                    android:drawableTop="@drawable/send_icon"
-                    android:padding="@dimen/_10sdp" />
+                    android:layout_width="@dimen/_42sdp"
+                    android:layout_height="@dimen/_42sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:stateListAnimator="@animator/button_animator"
+                    app:cardBackgroundColor="@color/app_color"
+                    app:cardCornerRadius="@dimen/_21sdp"
+                    app:cardUseCompatPadding="false">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:contentDescription="@null"
+                        android:src="@drawable/send_icon" />
+
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardNews"
+                style="@style/CardItemStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_10sdp"
-                app:cardCornerRadius="@dimen/_8sdp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/topLayout">
 
-                <LinearLayout
-                    android:id="@+id/cardNumOfMartyrsOfCaptiveMovement"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingVertical="@dimen/_15sdp"
-                    android:paddingStart="@dimen/_22sdp"
-                    android:paddingEnd="@dimen/_28sdp">
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_public"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/titleNumOfMartyrsOfCaptiveMovement"
-                        android:layout_width="0dp"
+                        style="@style/ItemTitleOrNameStyle"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/cairo_medium"
-                        android:gravity="center"
-                        android:text="@string/click_here_to_add_news"
-                        android:textColor="@color/app_color"
-                        android:textSize="@dimen/_14ssp"
-                        android:textStyle="bold" />
+                        android:layout_gravity="center"
+                        android:text="@string/today_s_news"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_14sdp"
-                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_15sdp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/cardNews">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/statisticsCard"
+                    style="@style/CardItemStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_6sdp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:contentPadding="@dimen/_6sdp">
+                    app:contentPadding="@dimen/_8sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -155,29 +180,27 @@
                             android:layout_height="@dimen/_78sdp"
                             android:contentDescription="@null"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/statistics_card" />
+                            android:src="@drawable/prisoners_statistics" />
 
                         <TextView
+                            style="@style/TitleForeBaseCardStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/cairo_medium"
-                            android:text="@string/prisoner_statistics"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_13sdp" />
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="@string/prisoner_statistics" />
 
                     </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/booksCard"
+                    style="@style/CardItemStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_6sdp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:contentPadding="@dimen/_6sdp">
+                    app:contentPadding="@dimen/_8sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -190,40 +213,37 @@
                             android:layout_height="@dimen/_78sdp"
                             android:contentDescription="@null"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/books_card" />
+                            android:src="@drawable/prisoners_books" />
 
                         <TextView
+                            style="@style/TitleForeBaseCardStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/cairo_medium"
-                            android:text="@string/prisoner_books"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_13sdp" />
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="@string/prisoner_books" />
 
                     </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_14sdp"
-                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="@+id/linearLayout"
                 app:layout_constraintStart_toStartOf="@+id/linearLayout"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/cardsCard"
+                    style="@style/CardItemStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_6sdp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:contentPadding="@dimen/_6sdp">
+                    app:contentPadding="@dimen/_8sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -236,29 +256,26 @@
                             android:layout_height="@dimen/_78sdp"
                             android:contentDescription="@null"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/cards_card" />
+                            android:src="@drawable/prisoners_cards" />
 
                         <TextView
+                            style="@style/TitleForeBaseCardStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/cairo_medium"
-                            android:text="@string/prisoner_cards"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_13sdp" />
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="@string/prisoner_cards" />
 
                     </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
-
-                <androidx.cardview.widget.CardView
+                <com.google.android.material.card.MaterialCardView
                     android:id="@+id/postersCard"
+                    style="@style/CardItemStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_6sdp"
                     android:layout_weight="1"
-                    app:cardCornerRadius="@dimen/_6sdp"
-                    app:contentPadding="@dimen/_6sdp">
+                    app:contentPadding="@dimen/_8sdp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -271,21 +288,141 @@
                             android:layout_height="@dimen/_78sdp"
                             android:contentDescription="@null"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/designs_card" />
+                            android:src="@drawable/prisoners_designs" />
 
                         <TextView
+                            style="@style/TitleForeBaseCardStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/cairo_medium"
-                            android:text="@string/prisoner_posters"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_13sdp" />
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:text="@string/prisoner_posters" />
 
                     </LinearLayout>
 
-                </androidx.cardview.widget.CardView>
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/btnAlbums"
+                style="@style/CardItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_image"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        style="@style/ItemTitleOrNameStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/albums"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.498"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/cardVideo"
+                style="@style/CardItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnAlbums">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_video"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/videos"
+                        android:textColor="@color/app_color"
+                        android:textSize="@dimen/_14ssp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/whatsappTweets"
+                style="@style/CardItemStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_15sdp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardVideo">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_15sdp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_whatsapp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        style="@style/ItemTitleOrNameStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/whatsapp_tweets"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -295,13 +432,12 @@
         android:id="@+id/floatPushNotification"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_12sdp"
-        android:backgroundTint="@color/white"
-        android:clickable="true"
-        android:focusable="true"
-        android:importantForAccessibility="no"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:contentDescription="float Push Notification"
         android:src="@drawable/ic_notifications"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

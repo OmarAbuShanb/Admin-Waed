@@ -1,24 +1,29 @@
 package waed.dev.adminhoria.models;
 
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.ServerTimestamp;
+
 public class Poster {
-    private String id;
+    private String uuid;
     private String imageUrl;
 
-    public Poster() {
+    @ServerTimestamp
+    private transient Timestamp timestamp;
 
-    }
+    public Poster() {}
 
-    public Poster(String id, String imageUrl) {
-        this.id = id;
+    public Poster(String uuid, String imageUrl, Timestamp timestamp) {
+        this.uuid = uuid;
         this.imageUrl = imageUrl;
+        this.timestamp = timestamp;
     }
 
-    public String getId() {
-        return id;
+    public String getUuid() {
+        return uuid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     public String getImageUrl() {
@@ -27,5 +32,13 @@ public class Poster {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
     }
 }

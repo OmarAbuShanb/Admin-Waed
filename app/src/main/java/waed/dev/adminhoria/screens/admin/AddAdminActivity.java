@@ -7,7 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
-import waed.dev.adminhoria.Utils.UtilsGeneral;
+import waed.dev.adminhoria.R;
+import waed.dev.adminhoria.utils.UtilsGeneral;
 import waed.dev.adminhoria.databinding.ActivityAddAdminBinding;
 import waed.dev.adminhoria.firebase.controller.FirebaseController;
 import waed.dev.adminhoria.screens.dialogs.LoadingDialog;
@@ -16,7 +17,6 @@ public class AddAdminActivity extends AppCompatActivity {
     private ActivityAddAdminBinding binding;
 
     private FirebaseController firebaseController;
-
     private LoadingDialog loadingDialog;
 
     @Override
@@ -32,6 +32,10 @@ public class AddAdminActivity extends AppCompatActivity {
         firebaseController = FirebaseController.getInstance();
         loadingDialog = new LoadingDialog();
 
+        setUpListeners();
+    }
+
+    private void setUpListeners() {
         binding.btnAddAdmin.setOnClickListener(view -> performRegisterNewAdmin());
     }
 
@@ -44,30 +48,16 @@ public class AddAdminActivity extends AppCompatActivity {
         String password = Objects.requireNonNull(binding.etPassword.getText()).toString().trim();
 
         if (checkData(email, password)) {
-            loadingDialog.show(getSupportFragmentManager(), "RegisterNewAdmin");
-
-            firebaseController.registerNewAdmin(email, password, new FirebaseController.FirebaseAuthCallback() {
-                @Override
-                public void onSuccess(String userUid) {
-                    addAdmin(userUid);
-                }
-
-                @Override
-                public void onFailure(String errorMessage) {
-                    UtilsGeneral.getInstance().showToast(getBaseContext(), errorMessage);
-                    loadingDialog.dismiss();
-                }
-            });
+            loadingDialog.show(getSupportFragmentManager(), "registerNewAdmin");
+            registerNewAdmin(email, password);
         }
     }
 
-    private void addAdmin(String userUid) {
-        firebaseController.addAdmin(userUid, new FirebaseController.FirebaseCallback() {
+    private void registerNewAdmin(String email, String password) {
+        firebaseController.registerNewAdmin(email, password, new FirebaseController.FirebaseAuthCallback() {
             @Override
-            public void onSuccess() {
-                UtilsGeneral.getInstance().showToast(getBaseContext(), "تم الاضافة بنجاح");
-                loadingDialog.dismiss();
-                finish();
+            public void onSuccess(String userUid) {
+                addAdmin(userUid);
             }
 
             @Override
@@ -76,5 +66,26 @@ public class AddAdminActivity extends AppCompatActivity {
                 loadingDialog.dismiss();
             }
         });
+    }
+
+    private void addAdmin(String userUid) {
+        firebaseController.addAdmin(userUid, new FirebaseController.FirebaseCallback() {
+            @Override
+            public void onSuccess() {
+                dismissDialogAndFinishSuccessfully();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                UtilsGeneral.getInstance().showToast(getBaseContext(), errorMessage);
+                loadingDialog.dismiss();
+            }
+        });
+    }
+
+    private void dismissDialogAndFinishSuccessfully() {
+        UtilsGeneral.getInstance().showToast(getBaseContext(), getString(R.string.task_completed_successfully));
+        loadingDialog.dismiss();
+        finish();
     }
 }

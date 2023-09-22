@@ -1,5 +1,6 @@
 package waed.dev.adminhoria.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,51 +10,53 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import waed.dev.adminhoria.Utils.UtilsGeneral;
+import waed.dev.adminhoria.utils.UtilsGeneral;
 import waed.dev.adminhoria.databinding.ItemBooksBinding;
 import waed.dev.adminhoria.models.Book;
 
 public class PrisonerBooksAdapter extends RecyclerView.Adapter<PrisonerBooksAdapter.viewHolder> {
     private ArrayList<Book> books;
     private PrisonerBooksListListener prisonerBooksListListener;
-    private DeletePrisonerBookListener deletePrisonerBookListener;
+
+    public PrisonerBooksAdapter() {
+        books = new ArrayList<>();
+    }
 
     public void setPrisonerBooksListListener(PrisonerBooksListListener prisonerBooksListListener) {
         this.prisonerBooksListListener = prisonerBooksListListener;
     }
 
-    public void setDeletePrisonerBookListener(DeletePrisonerBookListener deletePrisonerBookListener) {
-        this.deletePrisonerBookListener = deletePrisonerBookListener;
-    }
-
-    public PrisonerBooksAdapter(ArrayList<Book> books) {
+    @SuppressLint("NotifyDataSetChanged")
+    public void setData(ArrayList<Book> books) {
         this.books = books;
+        notifyDataSetChanged();
     }
 
-    public void setBooks(ArrayList<Book> books) {
-        this.books = books;
-        notifyItemRangeInserted(0, books.size());
-    }
-
-    public void removeItem(int position) {
-        books.remove(position);
-        notifyItemRemoved(position);
+    public void removeBook(String id) {
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getUuid().equals(id)) {
+                books.remove(i);
+                notifyItemRemoved(i);
+                break;
+            }
+        }
     }
 
     @NonNull
     @Override
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemBooksBinding binding
-                = ItemBooksBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ItemBooksBinding binding = ItemBooksBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false
+        );
         return new viewHolder(binding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
         Book model = books.get(position);
-        holder.bind(model, position);
+        holder.bind(model);
+
         holder.setPrisonerBooksListListener(prisonerBooksListListener);
-        holder.setDeletePrisonerBookListener(deletePrisonerBookListener);
     }
 
     @Override
@@ -66,14 +69,9 @@ public class PrisonerBooksAdapter extends RecyclerView.Adapter<PrisonerBooksAdap
         private final Context context;
 
         private PrisonerBooksListListener prisonerBooksListListener;
-        private DeletePrisonerBookListener deletePrisonerBookListener;
 
-        protected void setPrisonerBooksListListener(PrisonerBooksListListener prisonerBooksListListener) {
+        public void setPrisonerBooksListListener(PrisonerBooksListListener prisonerBooksListListener) {
             this.prisonerBooksListListener = prisonerBooksListListener;
-        }
-
-        protected void setDeletePrisonerBookListener(DeletePrisonerBookListener deletePrisonerBookListener) {
-            this.deletePrisonerBookListener = deletePrisonerBookListener;
         }
 
         public viewHolder(@NonNull ItemBooksBinding binding) {
@@ -82,7 +80,7 @@ public class PrisonerBooksAdapter extends RecyclerView.Adapter<PrisonerBooksAdap
             context = binding.getRoot().getContext();
         }
 
-        void bind(Book model, int position) {
+        void bind(Book model) {
             binding.bookName.setText(model.getName());
             binding.bookAuthor.setText(model.getAuthor());
 
@@ -90,18 +88,17 @@ public class PrisonerBooksAdapter extends RecyclerView.Adapter<PrisonerBooksAdap
                     .loadImage(context, model.getImageUrl())
                     .into(binding.bookImage);
 
-            binding.buBookCard.setOnClickListener(v -> prisonerBooksListListener.onClickItemListener(model));
+            binding.buBookCard.setOnClickListener(v ->
+                    prisonerBooksListListener.onClickItemListener(model));
 
             binding.btnDeleteBook.setOnClickListener(v ->
-                    deletePrisonerBookListener.onClickDeleteListener(model.getId(), position));
+                    prisonerBooksListListener.onClickDeleteListener(model));
         }
     }
 
     public interface PrisonerBooksListListener {
         void onClickItemListener(Book model);
-    }
 
-    public interface DeletePrisonerBookListener {
-        void onClickDeleteListener(String prisonerBookId, int positionItem);
+        void onClickDeleteListener(Book model);
     }
 }

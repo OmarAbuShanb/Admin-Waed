@@ -11,8 +11,8 @@
         android:id="@+id/headContentName"
         style="@style/CustomAppBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_54sdp"
-        android:text="@string/add_news"
+        android:layout_height="wrap_content"
+        android:text="@string/today_s_news"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,25 +27,23 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/headContentName"
-        tools:listitem="@layout/news_item" />
+        tools:listitem="@layout/item_news" />
 
     <!--AddButton-->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatAddNews"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_12sdp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/_12sdp"
-        android:backgroundTint="@color/white"
-        android:clickable="true"
-        android:focusable="true"
-        android:importantForAccessibility="no"
-        android:src="@drawable/ic_add_float"
+        android:contentDescription="Float Add News"
+        android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="HardcodedText" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressNews"
-        style="@style/CircularProgressStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/_50sdp"

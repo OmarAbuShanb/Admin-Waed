@@ -2,12 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:name=".Utils.AppController"
+        android:name=".utils.AppController"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -20,29 +22,51 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".screens.album_images.AlbumImagesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.statistics.AddPrisonersStatisticActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.videos.VideosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.videos.AddVideoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.whatsapp.WhatsAppTweetsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.album.AlbumsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".screens.album.AddAlbumActivity"
+            android:exported="false" />
+        <activity
             android:name=".screens.admin.AddAdminActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.notification.PushNotificationActivity"
+            android:name=".screens.notification.SendNotificationActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.posters.AddPosterActivity"
+            android:name=".screens.posters.AddPrisonerPosterActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.prisoners.AddPrisonerActivity"
+            android:name=".screens.prisoners.AddPrisonerCardActivity"
             android:exported="false" />
         <activity
             android:name=".screens.news.NewsActivity"
             android:exported="false" />
         <activity
-            android:name=".screens.book.AddBookActivity"
+            android:name=".screens.book.AddPrisonerBookActivity"
             android:exported="false" />
         <activity
             android:name=".screens.news.AddNewsActivity"
             android:exported="false" />
         <activity
             android:name=".screens.posters.PrisonersPostersActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.Waed.Posters" />
         <activity
             android:name=".screens.book.PrisonersBooksActivity"
             android:exported="false" />
@@ -62,11 +86,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".screens.auth.LoginActivity"
             android:exported="false" />
 
+        <service
+            android:name=".UploadVideosService"
+            android:exported="false" />
     </application>
 
 </manifest>
